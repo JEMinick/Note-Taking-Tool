@@ -95,10 +95,6 @@ module.exports = (app) => {
   });
   
   // finds specific note by ID from notes array
-  // const findNoteById = (id, notesArray) => {
-  //   const result = notesArray.filter(note => note.id === id)[0];
-  //   return result;
-  // };
 
   const removeNote = ( note, notesArray ) => {
     // removes specific note from notes array
@@ -108,11 +104,7 @@ module.exports = (app) => {
     }
     notesArray.splice( index, 1 );
 
-    // rewrites db.json with new array
-    // fs.writeFileSync(
-    //     path.join(__dirname, '../db/db.json'),
-    //     JSON.stringify({ notes: notesArray }, null, 2)
-    // );
+    // rewrites db.json with new array to secondary storage:
     fs.writeFile( sNotesDB, JSON.stringify(notesArray), (error) => {
       if ( error ) {
         bError = true;
@@ -146,19 +138,16 @@ module.exports = (app) => {
 
     let bFound = false;
     for( let i=0; (!bFound) && (i < notesData.length); i++ ) {
-        // if ( bDebugging ) {
-        //   var sRecord = JSON.stringify(notesData[i]);
-        //   console.log( `notesData[${i}] :: "${sRecord}"` );
-        // }
+        if ( bDebugging ) {
+          var sRecord = JSON.stringify(notesData[i]);
+          console.log( `Searching: notesData[${i}] : "${sRecord}"` );
+        }
         var iID = notesData[i].id;
-        // if ( bDebugging ) {
-        //   console.log( `notesData[${i}].id :: [${iID}]` );
-        // }
+        if ( bDebugging ) {
+          console.log( `Testing notesData[${i}].id : [${iID}]` );
+        }
         bFound = ( iID == iNoteID );
         if ( bFound ) {
-          // if ( bDebugging ) {
-          //   console.log( `Removing note# [${iNoteID}]` );
-          // }
           removeNote( notesData[i], notesData );
         }
     }
